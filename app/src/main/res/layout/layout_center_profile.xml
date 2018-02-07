@@ -1,69 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/rel1">
-            <include layout="@layout/snippet_top_profilebar"/>
-        </RelativeLayout>
-        <!--Midddddddddleeeeee-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/rel1"
-            android:id="@+id/rel2"
-            android:background="@drawable/white_grey_border_bottom">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/lin1"
-                android:weightSum="100">
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="24"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginLeft="25dp">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp" />
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="75"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginEnd="30dp">
-                    <include layout="@layout/snippet_top_profile"/>
-                </RelativeLayout>
-            </LinearLayout>
             <RelativeLayout
+                android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rel3"
-                android:layout_below="@+id/lin1"
-                android:layout_marginBottom="50dp">
-                <GridView
+                android:background="@drawable/white_grey_border_bottom">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/gridView"
-                    android:numColumns="3"
-                    android:verticalSpacing="1dp"
-                    android:horizontalSpacing="1dp"
-                    android:stretchMode="columnWidth"
-                    android:gravity="center"></GridView>
+                    android:orientation="horizontal"
+                    android:id="@+id/linearLayout1"
+                    android:background="@drawable/white_black_border_bottom"
+                    android:weightSum="100">
+                    
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="35"
+                        android:layout_marginLeft="20dp">
+                        
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="150dp"
+                            android:layout_height="100dp"
+                            android:id="@+id/profile_image"
+                            app:civ_border_color="@color/black"
+                            app:civ_border_width="1.5dp"
+                            android:src="@drawable/profileuser"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+                    
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="65"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp">
+
+                        <include layout="@layout/snippet_top_profile"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/linearLayout1"
+                    android:background="@drawable/blue_green_border_bottom"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/display_name"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:text="Sean" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/display_email"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:text="officialsuzuen@gmail.com"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/display_contact"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:text="09280239038"
+                        android:layout_marginTop="5dp"/>
+
+                </LinearLayout>
+
             </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout2"
+            android:layout_marginBottom="50dp">
+
+            <GridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gridView"
+                android:numColumns="3"
+                android:verticalSpacing="1dp"
+                android:horizontalSpacing="1dp"
+                android:gravity="center"
+                android:stretchMode="columnWidth">
+
+            </GridView>
+
         </RelativeLayout>
 
-        <!--<include layout="@layout/layout_bottom_navigation_view"/>-->
     </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+
+</merge>

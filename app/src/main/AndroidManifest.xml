@@ -13,33 +13,38 @@
             android:name=".Home.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".Messages.MessagesActivity"/>
-        <activity android:name=".Camera.CameraActivity"/>
-        <activity android:name=".Nearby.NearbyActivity"/>
+        <activity android:name=".Messages.MessagesActivity"
+            android:theme="@style/AppTheme2"></activity>
+        <activity android:name=".Camera.CameraActivity"
+            android:theme="@style/AppTheme2"></activity>
+        <activity android:name=".Nearby.NearbyActivity"
+            android:theme="@style/AppTheme2"></activity>
         <activity android:name=".Profile.ProfileActivity"
-            android:theme="@style/AppTheme2"/>
+            android:theme="@style/AppTheme2"></activity>
         <activity
-            android:name=".Login.Login"
+            android:name=".Login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2">
 
         </activity>
         <activity
-            android:name=".Login.Map"
+            android:name=".Map"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"></activity>
         <activity
-            android:name=".Login.Register"
+            android:name=".Register"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"></activity>
-        <activity android:name=".Profile.AccountSettingsActivity"
-                    android:theme="@style/AppTheme2"/>
+        <activity android:name=".Profile.EditActivity"
+            android:theme="@style/AppTheme2"></activity>
     </application>
 
 </manifest>
