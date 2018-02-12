@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "511288761553",
+    "firebase_url": "https://trasearchv1.firebaseio.com",
+    "project_id": "trasearchv1",
+    "storage_bucket": "trasearchv1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511288761553:android:60e6081739e87dd5",
+        "android_client_info": {
+          "package_name": "officialsuzuen.google.com.trasearch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511288761553-mp194uj57g0245fvj5m930o67gnk6hsd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "officialsuzuen.google.com.trasearch",
+            "certificate_hash": "167c1ad24e15ef4183d881945961a0711c33268e"
+          }
+        },
+        {
+          "client_id": "511288761553-rgrsq84f0mbcftj9c1vglciv61sneflb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmp0qEWb1As4xTvO5dtFbrzjym9iZ6mNs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511288761553-rgrsq84f0mbcftj9c1vglciv61sneflb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

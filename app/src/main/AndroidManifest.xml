@@ -2,6 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="officialsuzuen.google.com.trasearch">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,7 +32,7 @@
         <activity android:name=".Messages.MessagesActivity"/>
         <activity android:name=".Camera.CameraActivity"/>
         <activity android:name=".Nearby.NearbyActivity"/>
-        <activity android:name=".Profile.ProfileActivity"
+        <activity android:name=".Profile.EditProfileFragment"
             android:theme="@style/AppTheme2"/>
         <activity
             android:name=".Login.Login"
@@ -40,6 +50,10 @@
             android:theme="@style/AppTheme2"></activity>
         <activity android:name=".Profile.AccountSettingsActivity"
                     android:theme="@style/AppTheme2"/>
+        <activity android:name=".Profile.ProfileActivity"
+            android:theme="@style/AppTheme2"/>
+        <activity android:name=".Camera.NextActivity"/>
+
     </application>
 
 </manifest>
