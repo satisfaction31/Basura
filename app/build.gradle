@@ -55,10 +55,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:11.8.0'
     //firebase storage
     implementation 'com.google.firebase:firebase-storage:11.8.0'
+    implementation 'com.google.firebase:firebase-core:11.8.0'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
 //Google GSM Serrvice
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 
