@@ -71,6 +71,7 @@ public class ItemsFragment extends Fragment implements OnUpdateListener, OnLoadL
     private ArrayList<Photo> mPhotos;
     private ArrayList<Photo> mPaginatedPhotos;
     private ArrayList<String> mFollowing;
+    private ArrayList<String> mAllUsers;
     private int recursionIterator = 0;
     //    private ListView mListView;
     private ElasticListView mListView;
@@ -108,16 +109,59 @@ public class ItemsFragment extends Fragment implements OnUpdateListener, OnLoadL
     }
 
 
+    /**
+     //     * Retrieve all user id's that current user is following
+     //     */
+    private void getFollowing() {
+        Log.d(TAG, "getFollowing: searching for following");
+
+        clearAll();
+        //also add your own id to the list
+//        mFollowing.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+//        Query query = FirebaseDatabase.getInstance().getReference()
+//                .child(getActivity().getString(R.string.dbname_following))
+//                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                ;
+        Query query = FirebaseDatabase.getInstance().getReference()
+                .child(getActivity().getString(R.string.dbname_user_photos))
+                .orderByKey();
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "getFollowing: found user: " + singleSnapshot
+                            .getChildren());
+
+//                    mFollowing.add(singleSnapshot
+//                            .child(getString(R.string.field_user_id)).getValue().toString());
+             mAllUsers.add(singleSnapshot.getKey().toString());
+                }
+
+                getPhotos();
+//                getMyUserAccountSettings();
+                getFriendsAccountSettings();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+    }
     private void getFriendsAccountSettings(){
         Log.d(TAG, "getFriendsAccountSettings: getting friends account settings.");
 
-        for(int i = 0; i < mFollowing.size(); i++) {
-            Log.d(TAG, "getFriendsAccountSettings: user: " + mFollowing.get(i));
+//        for(int i = 0; i < mFollowing.size(); i++) {
+        for(int i = 0; i < mAllUsers.size(); i++) {
+            Log.d(TAG, "getFriendsAccountSettings: user: " + mAllUsers.get(i));
             final int count = i;
             Query query = FirebaseDatabase.getInstance().getReference()
                     .child(getString(R.string.dbname_user_account_settings))
-                    .orderByKey()
-                    .equalTo(mFollowing.get(i));
+                    .orderByKey();
+//                    .equalTo(mFollowing.get(i));
 
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -145,7 +189,10 @@ public class ItemsFragment extends Fragment implements OnUpdateListener, OnLoadL
                         }
 
                     }
-                    if (count == mFollowing.size() - 1) {
+//                    if (count == mFollowing.size() - 1) {
+//                        getFriendsStories();
+//                    }
+                    if (count == mAllUsers.size() - 1) {
                         getFriendsStories();
                     }
                 }
@@ -231,7 +278,10 @@ public class ItemsFragment extends Fragment implements OnUpdateListener, OnLoadL
 //                        Log.d(TAG, "getFriendsStories: " + mMasterStoriesArray.toString());
 
                     }
-                    if(count == mFollowing.size() - 1){
+//                    if(count == mFollowing.size() - 1){
+//                        initRecyclerView();
+//                    }
+                    if(count == mAllUsers.size() - 1){
                         initRecyclerView();
                     }
 
@@ -297,105 +347,123 @@ public class ItemsFragment extends Fragment implements OnUpdateListener, OnLoadL
             mRecyclerView.setAdapter(null);
         }
         mFollowing = new ArrayList<>();
+        mAllUsers = new ArrayList<>();
         mPhotos = new ArrayList<>();
         mPaginatedPhotos = new ArrayList<>();
         mUserAccountSettings = new ArrayList<>();
     }
 
-    /**
-     //     * Retrieve all user id's that current user is following
-     //     */
-    private void getFollowing() {
-        Log.d(TAG, "getFollowing: searching for following");
 
-        clearAll();
-        //also add your own id to the list
-        mFollowing.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//    private void getPhotos(){
+//        Log.d(TAG, "getPhotos: getting list of photos");
+//
+//        for(int i = 0; i < mFollowing.size(); i++){
+//            final int count = i;
+//            Query query = FirebaseDatabase.getInstance().getReference()
+//                    .child(getActivity().getString(R.string.dbname_user_photos))
+//                    .child(mFollowing.get(i))
+//                    .orderByChild(getString(R.string.field_user_id))
+//                    .equalTo(mFollowing.get(i))
+//                    ;
+//            query.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
+//
+//                        Photo newPhoto = new Photo();
+//                        Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+//
+//                        newPhoto.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+//                        newPhoto.setTags(objectMap.get(getString(R.string.field_tags)).toString());
+//                        newPhoto.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
+//                        newPhoto.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
+//                        newPhoto.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
+//                        newPhoto.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+//
+//                        Log.d(TAG, "getPhotos: photo: " + newPhoto.getPhoto_id());
+//                        List<Comment> commentsList = new ArrayList<Comment>();
+//                        for (DataSnapshot dSnapshot : singleSnapshot
+//                                .child(getString(R.string.field_comments)).getChildren()){
+//                            Map<String, Object> object_map = (HashMap<String, Object>) dSnapshot.getValue();
+//                            Comment comment = new Comment();
+//                            comment.setUser_id(object_map.get(getString(R.string.field_user_id)).toString());
+//                            comment.setComment(object_map.get(getString(R.string.field_comment)).toString());
+//                            comment.setDate_created(object_map.get(getString(R.string.field_date_created)).toString());
+//                            commentsList.add(comment);
+//                        }
+//                        newPhoto.setComments(commentsList);
+//                        mPhotos.add(newPhoto);
+//                    }
+//                    if(count >= mFollowing.size() - 1){
+//                        //display the photos
+//                        displayPhotos();
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    Log.d(TAG, "onCancelled: query cancelled.");
+//                }
+//            });
+//
+//        }
+//    }
+private void getPhotos(){
+    Log.d(TAG, "getPhotos: getting list of photos");
 
+    for(int i = 0; i < mAllUsers.size(); i++){
+        final int count = i;
         Query query = FirebaseDatabase.getInstance().getReference()
-                .child(getActivity().getString(R.string.dbname_following))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(getActivity().getString(R.string.dbname_user_photos))
+                .child(mAllUsers.get(i))
+                .orderByChild(getString(R.string.field_user_id))
+                .equalTo(mAllUsers.get(i))
                 ;
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    Log.d(TAG, "getFollowing: found user: " + singleSnapshot
-                            .child(getString(R.string.field_user_id)).getValue());
+                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
 
-                    mFollowing.add(singleSnapshot
-                            .child(getString(R.string.field_user_id)).getValue().toString());
+                    Photo newPhoto = new Photo();
+                    Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+
+                    newPhoto.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+                    newPhoto.setTags(objectMap.get(getString(R.string.field_tags)).toString());
+                    newPhoto.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
+                    newPhoto.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
+                    newPhoto.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
+                    newPhoto.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
+                    Log.d(TAG, "getPhotos: photo: " + newPhoto.getPhoto_id());
+                    List<Comment> commentsList = new ArrayList<Comment>();
+                    for (DataSnapshot dSnapshot : singleSnapshot
+                            .child(getString(R.string.field_comments)).getChildren()){
+                        Map<String, Object> object_map = (HashMap<String, Object>) dSnapshot.getValue();
+                        Comment comment = new Comment();
+                        comment.setUser_id(object_map.get(getString(R.string.field_user_id)).toString());
+                        comment.setComment(object_map.get(getString(R.string.field_comment)).toString());
+                        comment.setDate_created(object_map.get(getString(R.string.field_date_created)).toString());
+                        commentsList.add(comment);
+                    }
+                    newPhoto.setComments(commentsList);
+                    mPhotos.add(newPhoto);
+                }
+                if(count >= mAllUsers.size() - 1){
+                    //display the photos
+                    displayPhotos();
                 }
 
-                getPhotos();
-//                getMyUserAccountSettings();
-                getFriendsAccountSettings();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.d(TAG, "onCancelled: query cancelled.");
             }
-
         });
 
     }
-
-    private void getPhotos(){
-        Log.d(TAG, "getPhotos: getting list of photos");
-
-        for(int i = 0; i < mFollowing.size(); i++){
-            final int count = i;
-            Query query = FirebaseDatabase.getInstance().getReference()
-                    .child(getActivity().getString(R.string.dbname_user_photos))
-                    .child(mFollowing.get(i))
-                    .orderByChild(getString(R.string.field_user_id))
-                    .equalTo(mFollowing.get(i))
-                    ;
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
-
-                        Photo newPhoto = new Photo();
-                        Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
-
-                        newPhoto.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
-                        newPhoto.setTags(objectMap.get(getString(R.string.field_tags)).toString());
-                        newPhoto.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
-                        newPhoto.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
-                        newPhoto.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
-                        newPhoto.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
-
-                        Log.d(TAG, "getPhotos: photo: " + newPhoto.getPhoto_id());
-                        List<Comment> commentsList = new ArrayList<Comment>();
-                        for (DataSnapshot dSnapshot : singleSnapshot
-                                .child(getString(R.string.field_comments)).getChildren()){
-                            Map<String, Object> object_map = (HashMap<String, Object>) dSnapshot.getValue();
-                            Comment comment = new Comment();
-                            comment.setUser_id(object_map.get(getString(R.string.field_user_id)).toString());
-                            comment.setComment(object_map.get(getString(R.string.field_comment)).toString());
-                            comment.setDate_created(object_map.get(getString(R.string.field_date_created)).toString());
-                            commentsList.add(comment);
-                        }
-                        newPhoto.setComments(commentsList);
-                        mPhotos.add(newPhoto);
-                    }
-                    if(count >= mFollowing.size() - 1){
-                        //display the photos
-                        displayPhotos();
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.d(TAG, "onCancelled: query cancelled.");
-                }
-            });
-
-        }
-    }
+}
 
     private void displayPhotos(){
 //        mPaginatedPhotos = new ArrayList<>();

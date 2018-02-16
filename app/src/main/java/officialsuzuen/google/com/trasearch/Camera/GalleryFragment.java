@@ -23,7 +23,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 
-import officialsuzuen.google.com.trasearch.Profile.EditProfileFragment;
+import officialsuzuen.google.com.trasearch.Profile.EditProfileActivity;
 import officialsuzuen.google.com.trasearch.R;
 import officialsuzuen.google.com.trasearch.Utils.FilePaths;
 import officialsuzuen.google.com.trasearch.Utils.FileSearch;
@@ -66,6 +66,7 @@ public class GalleryFragment extends Fragment {
         directories = new ArrayList<>();
         Log.d(TAG, "onCreateView: started.");
 
+        init();
         ImageView shareClose = (ImageView) view.findViewById(R.id.ivCloseShare);
         shareClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,18 +87,18 @@ public class GalleryFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), NextActivity.class);
                     intent.putExtra(getString(R.string.selected_image), mSelectedImage);
                     startActivity(intent);
-                }else{
-                    Intent intent = new Intent(getActivity(), EditProfileFragment.class);
-                    intent.putExtra(getString(R.string.selected_image), mSelectedImage);
-                    intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.edit_profile_fragment));
-                    startActivity(intent);
-                    getActivity().finish();
-                }
+                        }else{
+                            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                            intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                            intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.edit_profile_fragment));
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
 
-            }
-        });
+                    }
+                });
 
-        init();
+
         return view;
     }
 

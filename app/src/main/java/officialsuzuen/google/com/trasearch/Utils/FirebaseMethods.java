@@ -387,7 +387,7 @@ public class FirebaseMethods {
     }
 
     private String getTimestamp(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.CANADA);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));
         return sdf.format(new Date());
     }
@@ -593,10 +593,9 @@ public class FirebaseMethods {
 
 
     /**
-     * Retrieves the account settings for teh user currently logged in
-     * Database: user_acount_Settings node
-     * @param dataSnapshot
-     * @return
+     * RETRIEVE THE DATA FROM DATABASE WHICH ARE THE USER_ACCOUNT_SETTING TABLE NODE
+     * AND USERS TABLE NODE NYA ANG RETURN TYPE KAY USERSETTING PARA MAGAMIT RETURN
+     * ADTO SA PROFILE FRAGMENT
      */
     public UserSettings getUserSettings(DataSnapshot dataSnapshot){
         Log.d(TAG, "getUserSettings: retrieving user account settings from firebase.");
@@ -675,6 +674,10 @@ public class FirebaseMethods {
                 Log.d(TAG, "getUserAccountSettings: retrieved users information: " + user.toString());
             }
         }
+        /**
+         * GI GAMIT ANG MODEL USERSETTINGS TO CREATE OBJECT THEN STORE ANG
+         * TWO KA MODELS WHICH ARE USER AND USER_ACCOUNT_SETTINGS
+         */
         return new UserSettings(user, settings);
 
     }

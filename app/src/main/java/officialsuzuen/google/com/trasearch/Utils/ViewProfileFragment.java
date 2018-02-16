@@ -41,7 +41,7 @@ import officialsuzuen.google.com.trasearch.Models.Photo;
 import officialsuzuen.google.com.trasearch.Models.User;
 import officialsuzuen.google.com.trasearch.Models.UserAccountSettings;
 import officialsuzuen.google.com.trasearch.Models.UserSettings;
-import officialsuzuen.google.com.trasearch.Profile.EditProfileFragment;
+import officialsuzuen.google.com.trasearch.Profile.EditProfileActivity;
 import officialsuzuen.google.com.trasearch.R;
 
 
@@ -54,6 +54,11 @@ public class ViewProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
 
 
+    /* GA HIMO UG INTERFACE INSIDE SA FRAGMENT PARA IG
+        PARA MA GAMIT SA GRID IMAGE CLICK PERO ANG
+        PAG INFLATE SA LAYOUT ADTO SA PROFILE ACTIVITY USING
+        THE PARAMETERS SUPPLIED  ARI NGA GE CALL
+    */
     public interface OnGridImageSelectedListener{
         void onGridImageSelected(Photo photo, int activityNumber);
     }
@@ -181,7 +186,7 @@ public class ViewProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to " + mContext.getString(R.string.edit_profile_fragment));
-                Intent intent = new Intent(getActivity(), EditProfileFragment.class);
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -190,9 +195,16 @@ public class ViewProfileFragment extends Fragment {
 
         return view;
     }
+    private User getUserFromBundle(){
+        Log.d(TAG, "getUserFromBundle: arguments: " + getArguments());
 
-
-
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            return bundle.getParcelable(getString(R.string.intent_user));
+        }else{
+            return null;
+        }
+    }
     private void init(){
 
         //set the profile widgets
@@ -222,6 +234,10 @@ public class ViewProfileFragment extends Fragment {
         //get the users profile photos
 
         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
+
+        /* GAKUHA SA DATABASE PHOTOS DATA ADTO SA USER_PHOTOS TABLE
+         * NYA ANG UNIQUE ID KAY ANG USER_ID
+          * NYA INSIDE KAY ANG FIELDS WITH VALUES*/
         Query query2 = reference2
                 .child(getString(R.string.dbname_user_photos))
                 .child(mUser.getUser_id());
@@ -233,6 +249,9 @@ public class ViewProfileFragment extends Fragment {
                 for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
 
                     Photo photo = new Photo();
+                    /*GE CONVERT TO HASHMAP ANG DATASNAPSHOTS.
+                    NGA GIKAN SA DATABASE NGA DATA. THEN GIBUTANG ANG VALUE
+                    SA PHOTO NGA OBJECT TO SET */
                     Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
 
                     photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
@@ -241,6 +260,7 @@ public class ViewProfileFragment extends Fragment {
                     photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
                     photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
                     photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
 
                     ArrayList<Comment> comments = new ArrayList<Comment>();
                     for (DataSnapshot dSnapshot : singleSnapshot
@@ -411,16 +431,7 @@ public class ViewProfileFragment extends Fragment {
         });
     }
 
-    private User getUserFromBundle(){
-        Log.d(TAG, "getUserFromBundle: arguments: " + getArguments());
 
-        Bundle bundle = this.getArguments();
-        if(bundle != null){
-            return bundle.getParcelable(getString(R.string.intent_user));
-        }else{
-            return null;
-        }
-    }
 
     @Override
     public void onAttach(Context context) {

@@ -34,13 +34,13 @@ import officialsuzuen.google.com.trasearch.Utils.FirebaseMethods;
 public class Register extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity";
-
+    //VARS
     private Context mContext;
     private String email, username, password;
     private EditText mEmail, mPassword, mUsername;
-    private TextView loadingPleaseWait;
     private Button btnRegister;
     private ProgressBar mProgressBar;
+    private String append = "";
 
     //firebase
     private FirebaseAuth mAuth;
@@ -49,7 +49,7 @@ public class Register extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
 
-    private String append = "";
+
 
 
     @Override
@@ -64,7 +64,19 @@ public class Register extends AppCompatActivity {
         setupFirebaseAuth();
         init();
     }
+    //INITIALIZE WIDGET HOLDERS
+    private void initWidgets(){
+        Log.d(TAG, "initWidgets: Initializing Widgets.");
+        mEmail = (EditText) findViewById(R.id.registerEt4);
+        mUsername = (EditText) findViewById(R.id.registerEt1);
+        btnRegister = (Button) findViewById(R.id.regbtn);
+        mProgressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
+        mPassword = (EditText) findViewById(R.id.registerEt2);
+        mContext = Register.this;
+        mProgressBar.setVisibility(View.GONE);
 
+    }
+    //INITIALIZE VARIABLES WITH THE INPUT
     private void init(){
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,35 +102,6 @@ public class Register extends AppCompatActivity {
         }
         return true;
     }
-    /**
-     * Initialize the activity widgets
-     */
-    private void initWidgets(){
-        Log.d(TAG, "initWidgets: Initializing Widgets.");
-        mEmail = (EditText) findViewById(R.id.registerEt4);
-        mUsername = (EditText) findViewById(R.id.registerEt1);
-        btnRegister = (Button) findViewById(R.id.regbtn);
-        mProgressBar = (ProgressBar) findViewById(R.id.registerProgressBar);
-        mPassword = (EditText) findViewById(R.id.registerEt2);
-        mContext = Register.this;
-        mProgressBar.setVisibility(View.GONE);
-
-    }
-
-    private boolean isStringNull(String string){
-        Log.d(TAG, "isStringNull: checking string if null.");
-
-        if(string.equals("")){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    /**
-     * Check is @param username already exists in teh database
-     * @param username
-     */
     private void checkIfUsernameExists(final String username) {
         Log.d(TAG, "checkIfUsernameExists: Checking if  " + username + " already exists.");
 
@@ -131,9 +114,9 @@ public class Register extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
-                    if (singleSnapshot.exists()){
-                        Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH: " + singleSnapshot.getValue(User.class).getUsername());
+                for(DataSnapshot singleValSnapshot: dataSnapshot.getChildren()){
+                    if (singleValSnapshot.exists()){
+                        Log.d(TAG, "checkIfUsernameExists: FOUND A MATCH USERNAME!: " + singleValSnapshot.getValue(User.class).getUsername());
                         append = myRef.push().getKey().substring(3,10);
                         Log.d(TAG, "onDataChange: username already exists. Appending random string to name: " + append);
                     }

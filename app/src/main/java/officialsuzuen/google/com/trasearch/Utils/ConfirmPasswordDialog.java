@@ -1,12 +1,8 @@
 package officialsuzuen.google.com.trasearch.Utils;
 
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import officialsuzuen.google.com.trasearch.Profile.EditProfileFragment;
 import officialsuzuen.google.com.trasearch.R;
 
 
@@ -49,7 +44,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
 
                 String password = mPassword.getText().toString();
                 if(!password.equals("")){
-                    EditProfileFragment toconfirmPass = new EditProfileFragment();
+//                    EditProfileActivity toconfirmPass = new EditProfileActivity();
 //                    toconfirmPass.onConfirmPassword(password);
                     mOnConfirmPasswordListener.onConfirmPassword(password);
                     getDialog().dismiss();

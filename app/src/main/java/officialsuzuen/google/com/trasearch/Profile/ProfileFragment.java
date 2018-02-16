@@ -113,9 +113,6 @@ public class ProfileFragment extends Fragment {
 
         mFirebaseMethods = new FirebaseMethods(getActivity());
 
-
-
-
         setupBottomNavigationView();
         setupToolbar();
 
@@ -138,13 +135,12 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to " + mContext.getString(R.string.edit_profile_fragment));
-                Intent intent = new Intent(getActivity(), EditProfileFragment.class);
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra(getString(R.string.calling_activity), getString(R.string.profile_activity));
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
-
         return view;
     }
 
@@ -377,13 +373,10 @@ public class ProfileFragment extends Fragment {
 
 
                 if (user != null) {
-                    // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
-                    // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
 
@@ -391,12 +384,8 @@ public class ProfileFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //retrieve user information from the database
+                //GE RETRIEVE ANG DATA SA USERS GAMIT ANG SNAPSHOT SA DATABASE
                 setProfileWidgets(mFirebaseMethods.getUserSettings(dataSnapshot));
-
-                //retrieve images for the user in question
-
             }
 
             @Override

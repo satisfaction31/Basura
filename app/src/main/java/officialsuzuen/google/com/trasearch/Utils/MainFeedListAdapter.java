@@ -139,11 +139,11 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: loading comment thread for " + getItem(position).getPhoto_id());
-//                ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),
-//                        mContext.getString(R.string.home_activity));
+                ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),
+                        mContext.getString(R.string.home_activity));
 //
 //                //going to need to do something else?
-//                ((HomeActivity)mContext).hideLayout();
+                ((HomeActivity)mContext).hideLayout();
 
             }
         });
@@ -214,11 +214,11 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
                     holder.comment.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),
-//                                    mContext.getString(R.string.home_activity));
+                            ((HomeActivity)mContext).onCommentThreadSelected(getItem(position),
+                                    mContext.getString(R.string.home_activity));
 //
 //                            //another thing?
-//                            ((HomeActivity)mContext).hideLayout();
+                            ((HomeActivity)mContext).hideLayout();
                         }
                     });
                 }
@@ -293,10 +293,9 @@ public class MainFeedListAdapter extends ArrayAdapter<Photo> {
         }
 
         @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            Log.d(TAG, "onDoubleTap: double tap detected.");
+        public boolean onSingleTapConfirmed(MotionEvent e) {
 
-            Log.d(TAG, "onDoubleTap: clicked on photo: " + mHolder.photo.getPhoto_id());
+            Log.d(TAG, "SingleTapDetected: clicked on photo: " + mHolder.photo.getPhoto_id());
 
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
             Query query = reference

@@ -84,7 +84,7 @@ public class ViewCommentsFragment extends Fragment {
         try{
             mPhoto = getPhotoFromBundle();
             setupFirebaseAuth();
-
+            Log.d(TAG, "getPhotoFromBundle: arguments: " + getArguments());
         }catch (NullPointerException e){
             Log.e(TAG, "onCreateView: NullPointerException: " + e.getMessage() );
         }
@@ -120,7 +120,7 @@ public class ViewCommentsFragment extends Fragment {
                 Log.d(TAG, "onClick: navigating back");
                 if(getCallingActivityFromBundle().equals(getString(R.string.home_activity))){
                     getActivity().getSupportFragmentManager().popBackStack();
-//                    ((HomeActivity)getActivity()).showLayout();
+                    ((HomeActivity)getActivity()).showLayout();
 
                 }else{
                     getActivity().getSupportFragmentManager().popBackStack();

@@ -32,7 +32,7 @@
         <activity android:name=".Messages.MessagesActivity"/>
         <activity android:name=".Camera.CameraActivity"/>
         <activity android:name=".Nearby.NearbyActivity"/>
-        <activity android:name=".Profile.EditProfileFragment"
+        <activity android:name=".Profile.EditProfileActivity"
             android:theme="@style/AppTheme2"/>
         <activity
             android:name=".Login.Login"
@@ -41,15 +41,9 @@
 
         </activity>
         <activity
-            android:name=".Login.Map"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme2"></activity>
-        <activity
             android:name=".Login.Register"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2"></activity>
-        <activity android:name=".Profile.AccountSettingsActivity"
-                    android:theme="@style/AppTheme2"/>
         <activity android:name=".Profile.ProfileActivity"
             android:theme="@style/AppTheme2"/>
         <activity android:name=".Camera.NextActivity"/>

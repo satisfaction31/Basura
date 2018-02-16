@@ -10,9 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import officialsuzuen.google.com.trasearch.Profile.EditProfileFragment;
+import officialsuzuen.google.com.trasearch.Profile.EditProfileActivity;
 import officialsuzuen.google.com.trasearch.R;
 import officialsuzuen.google.com.trasearch.Utils.Permissions;
 
@@ -26,8 +25,8 @@ public class PhotoFragment extends Fragment {
 
     //constant
     private static final int PHOTO_FRAGMENT_NUM = 1;
-    private static final int GALLERY_FRAGMENT_NUM = 2;
     private static final int  CAMERA_REQUEST_CODE = 5;
+
 
 
     @Nullable
@@ -36,11 +35,6 @@ public class PhotoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
         Log.d(TAG, "onCreateView: started.");
 
-        Button btnLaunchCamera = (Button) view.findViewById(R.id.btnLaunchCamera);
-        btnLaunchCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: launching camera.");
 
                 if(((CameraActivity)getActivity()).getCurrentTabNumber() == PHOTO_FRAGMENT_NUM){
                     if(((CameraActivity)getActivity()).checkPermissions(Permissions.CAMERA_PERMISSION[0])){
@@ -53,8 +47,6 @@ public class PhotoFragment extends Fragment {
                         startActivity(intent);
                     }
                 }
-            }
-        });
 
         return view;
     }
@@ -92,8 +84,8 @@ public class PhotoFragment extends Fragment {
             }else{
                try{
                    bitmap = (Bitmap) data.getExtras().get("data");
-                   Log.d(TAG, "onActivityResult: received new bitmap from camera: " + bitmap);
-                   Intent intent = new Intent(getActivity(), EditProfileFragment.class);
+                   Log.d(TAG, "onActivityResult: received  new bitmap from camera: " + bitmap);
+                   Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                    intent.putExtra(getString(R.string.selected_bitmap), bitmap);
                    intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.edit_profile_fragment));
                    startActivity(intent);

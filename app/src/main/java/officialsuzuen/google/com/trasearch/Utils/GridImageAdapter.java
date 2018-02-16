@@ -32,6 +32,10 @@ public class GridImageAdapter extends ArrayAdapter<String> {
     private String mAppend;
     private ArrayList<String> imgURLs;
 
+        /*  MAG GAMIT UG SUPER()
+        PARA MA ACCESS ANG GETTERS AND SETTERS NGA NAAA SA
+        CLASS NGA GATAWAG SA GRIDIMAGE ADAPTER
+          */
     public GridImageAdapter(Context context, int layoutResource, String append, ArrayList<String> imgURLs) {
         super(context, layoutResource, imgURLs);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -51,9 +55,15 @@ public class GridImageAdapter extends ArrayAdapter<String> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         /*
-        Viewholder build pattern (Similar to recyclerview)
+             Viewholder build pattern (Similar to recyclerview)
          */
         final ViewHolder holder;
+           /* IF ANG CONVERTVIEW WHICH IS ANG VIRTUAL NGA HOLDER UG VIEW
+            KAY NULL. DAPAT NASAD IYA EREFENCE ANG LAYOUT RESOURCE NGA GIPASA AS PARAMETER
+            PARA MO POINT SIYA SA LAYOUT UG MAGAMIT NIYA ANG ID'S SA WIDGETS
+            ANG VIEWHOLDER OBJECT KAY E STORE TEMPORARY SA CONVERTVIEW
+            PERO IF NOT NULL ANG CONVERTVIEW , KUHAON NYA ANG NASTORE TEMPORARY
+         */
         if(convertView == null){
             convertView = mInflater.inflate(layoutResource, parent, false);
             holder = new ViewHolder();
@@ -66,6 +76,9 @@ public class GridImageAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+           /*
+            INITIALIZE PARA SAKTO IG LOAD SA IMAGE
+            */
         String imgURL = getItem(position);
 
         ImageLoader imageLoader = ImageLoader.getInstance();

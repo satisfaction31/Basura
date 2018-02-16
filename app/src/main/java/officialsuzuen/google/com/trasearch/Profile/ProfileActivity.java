@@ -40,12 +40,13 @@ public class ProfileActivity extends AppCompatActivity implements
         ProfileFragment.OnGridImageSelectedListener ,
         ViewPostFragment.OnCommentThreadSelectedListener,
         ViewProfileFragment.OnGridImageSelectedListener{
+
     private static final String TAG = "ProfileActivity";
     private static final int NUM_GRID_COLUMNS = 3;
     private Context mContext = ProfileActivity.this;
-    private static final int ACTIVITY_NUM = 4;
     private ProgressBar mProgressbar;
     private ImageView profilePhoto;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +71,33 @@ public class ProfileActivity extends AppCompatActivity implements
         transaction.commit();
 
     }
+    @Override
+    public void onCommentThreadSelectedListener(Photo photo) {
+        Log.d(TAG, "onCommentThreadSelectedListener:  selected a comment thread");
+
+        ViewCommentsFragment fragment = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo), photo);
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragment));
+        transaction.commit();
+    }
     private void init(){
-        Log.d(TAG, "init: inflating " + getString(R.string.profile_fragment));
+        Log.d(TAG, "init: PAG INFLATE SA FRAGMENT NGA PROFILE " + getString(R.string.profile_fragment));
 
         Intent intent = getIntent();
         if(intent.hasExtra(getString(R.string.calling_activity))){
             Log.d(TAG, "init: searching for user object attached as intent extra");
             if(intent.hasExtra(getString(R.string.intent_user))){
                 User user = intent.getParcelableExtra(getString(R.string.intent_user));
+
+                /* IF DI EQUAL SA USER NGA GA GAMIT ANG ID
+                    IT MEANS LAIN NGA USERS VIEW ANG E INFLATE
+                    PARA SA VIEW PROFILE
+                */
                 if(!user.getUser_id().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                     Log.d(TAG, "init: inflating view profile");
                     ViewProfileFragment fragment = new ViewProfileFragment();
@@ -91,6 +111,11 @@ public class ProfileActivity extends AppCompatActivity implements
                     transaction.addToBackStack(getString(R.string.view_profile_fragment));
                     transaction.commit();
                 }else{
+
+                     /* IF ANG CURRENT USER GAGAMIT
+                     IT MEAN ANG E INFLATE NGA LAYOUT KAY
+                     IYAHANG PROFILE VIEW
+                    */
                     Log.d(TAG, "init: inflating Profile");
                     ProfileFragment fragment = new ProfileFragment();
                     FragmentTransaction transaction = ProfileActivity.this.getSupportFragmentManager().beginTransaction();
@@ -112,20 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onCommentThreadSelectedListener(Photo photo) {
-        Log.d(TAG, "onCommentThreadSelectedListener:  selected a comment thread");
 
-        ViewCommentsFragment fragment = new ViewCommentsFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(getString(R.string.photo), photo);
-        fragment.setArguments(args);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(getString(R.string.view_comments_fragment));
-        transaction.commit();
-    }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {

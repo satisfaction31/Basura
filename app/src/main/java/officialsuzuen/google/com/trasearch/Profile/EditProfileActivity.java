@@ -1,18 +1,14 @@
 package officialsuzuen.google.com.trasearch.Profile;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import officialsuzuen.google.com.trasearch.Camera.CameraActivity;
@@ -47,10 +42,10 @@ import officialsuzuen.google.com.trasearch.Utils.UniversalImageLoader;
  * Created by Edward on 08/02/2018.
  */
 
-public class EditProfileFragment extends AppCompatActivity implements
+public class EditProfileActivity extends AppCompatActivity implements
         ConfirmPasswordDialog.OnConfirmPasswordListener {
 
-    private static final String TAG = "EditProfileFragment";
+    private static final String TAG = "EditProfileActivity";
 
     //firebase
     private static FirebaseAuth mAuth;
@@ -74,7 +69,7 @@ public class EditProfileFragment extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_editprofile);
 
-        mContext = EditProfileFragment.this;
+        mContext = EditProfileActivity.this;
         //widgets
         mProfilePhoto = (CircleImageView) findViewById(R.id.profile_photo);
         mDisplayName = (EditText) findViewById(R.id.display_name);
@@ -85,7 +80,6 @@ public class EditProfileFragment extends AppCompatActivity implements
         mFirebaseMethods = new FirebaseMethods(mContext);
 
         setupFirebaseAuth();
-//        setProfileImage();
 
         ImageView backArrow = findViewById(R.id.backArrow);
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +136,7 @@ public class EditProfileFragment extends AppCompatActivity implements
             }
         });
     }
-    //KUHAON ANG INPUT! THEN E COMPARE SA  DATABAse IF NI EXIST OR WALA
+    //KUHAON ANG INPUT! THEN E COMPARE SA  DATABASE IF NI EXIST OR WALA
     private void saveProfileSettings(){
 
         final String holdisplayName = mDisplayName.getText().toString();
@@ -231,12 +225,12 @@ public class EditProfileFragment extends AppCompatActivity implements
 
                 if (intent.hasExtra(getString(R.string.selected_image))) {
                     //set the new profile picture
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(EditProfileFragment.this);
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(EditProfileActivity.this);
                     firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
                             intent.getStringExtra(getString(R.string.selected_image)), null);
                 } else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
                     //set the new profile picture
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(EditProfileFragment.this);
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(EditProfileActivity.this);
                     firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
                             null, (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap)));
                 }
@@ -281,7 +275,6 @@ public class EditProfileFragment extends AppCompatActivity implements
                 //retrieve user information from the database
                 setProfileWidgets(mFirebaseMethods.getUserSettings(dataSnapshot));
 
-                //retrieve images for the user in question
 
             }
 

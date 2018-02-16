@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,19 +21,44 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import officialsuzuen.google.com.trasearch.Login.Login;
+import officialsuzuen.google.com.trasearch.Models.Photo;
+import officialsuzuen.google.com.trasearch.OpenGL.AddToStoryDialog;
+import officialsuzuen.google.com.trasearch.OpenGL.NewStoryActivity;
 import officialsuzuen.google.com.trasearch.R;
 import officialsuzuen.google.com.trasearch.Utils.BottomNavigationViewHelper;
+import officialsuzuen.google.com.trasearch.Utils.FirebaseMethods;
+import officialsuzuen.google.com.trasearch.Utils.MainFeedListAdapter;
 import officialsuzuen.google.com.trasearch.Utils.UniversalImageLoader;
+import officialsuzuen.google.com.trasearch.Utils.ViewCommentsFragment;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements
+        MainFeedListAdapter.OnLoadMoreItemsListener{
 
+    @Override
+    public void onLoadMoreItems() {
+        Log.d(TAG, "onLoadMoreItems: displaying more photos");
+        ItemsFragment fragment = (ItemsFragment)getSupportFragmentManager()
+                .findFragmentByTag("android:switcher:" + R.id.container + ":" + mViewPager.getCurrentItem());
+        if(fragment != null){
+            fragment.displayMorePhotos();
+        }
+    }
     private static final String TAG = "HomeActivity";
     private Context mContext = HomeActivity.this;
     private static final int ACTIVITY_NUM = 0;
+    private static final int HOME_FRAGMENT = 1;
+    private static final int RESULT_ADD_NEW_STORY = 7891;
+    private final static int CAMERA_RQ = 6969;
+    private static final int REQUEST_ADD_NEW_STORY = 8719;
 
     //Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+
+    //widgets
+    private ViewPager mViewPager;
+    private FrameLayout mFrameLayout;
+    private RelativeLayout mRelativeLayout;
 
 
     @Override
@@ -38,12 +67,91 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: starting.");
 
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mFrameLayout = (FrameLayout) findViewById(R.id.frame_container);
+        mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayoutParent);
         setUpFirebaseAuth();
         initImageLoader();
         setupBottomNavigationView();
         setupViewPager();
     }
+    public void openNewStoryActivity(){
+        Intent intent = new Intent(this, NewStoryActivity.class);
+        startActivityForResult(intent, REQUEST_ADD_NEW_STORY);
+    }
 
+    public void showAddToStoryDialog(){
+        Log.d(TAG, "showAddToStoryDialog: showing add to story dialog.");
+        AddToStoryDialog dialog = new AddToStoryDialog();
+        dialog.show(getFragmentManager(), getString(R.string.dialog_add_to_story));
+    }
+
+
+    public void onCommentThreadSelected(Photo photo, String callingActivity){
+        Log.d(TAG, "onCommentThreadSelected: selected a coemment thread");
+
+        ViewCommentsFragment fragment  = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo), photo);
+        args.putString(getString(R.string.home_activity), getString(R.string.home_activity));
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragment));
+        transaction.commit();
+
+    }
+
+    public void hideLayout(){
+        Log.d(TAG, "hideLayout: hiding layout");
+        mRelativeLayout.setVisibility(View.GONE);
+        mFrameLayout.setVisibility(View.VISIBLE);
+    }
+
+
+    public void showLayout(){
+        Log.d(TAG, "hideLayout: showing layout");
+        mRelativeLayout.setVisibility(View.VISIBLE);
+        mFrameLayout.setVisibility(View.GONE);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(mFrameLayout.getVisibility() == View.VISIBLE){
+            showLayout();
+        }
+    }
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Log.d(TAG, "onActivityResult: incoming result.");
+//        // Received recording or error from MaterialCamera
+//
+//        if (requestCode == REQUEST_ADD_NEW_STORY) {
+//            Log.d(TAG, "onActivityResult: incoming new story.");
+//            if (resultCode == RESULT_ADD_NEW_STORY) {
+//                Log.d(TAG, "onActivityResult: got the new story.");
+//                Log.d(TAG, "onActivityResult: data type: " + data.getType());
+//
+//                final ItemsFragment fragment = (ItemsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager_container + ":" + 1);
+//                if (fragment != null) {
+//
+//                    FirebaseMethods firebaseMethods = new FirebaseMethods(this);
+//                    firebaseMethods.uploadNewStory(data, fragment);
+//
+//                }
+//                else{
+//                    Log.d(TAG, "onActivityResult: could not communicate with home fragment.");
+//                }
+//
+//
+//
+//            }
+//        }
+//    }
     private void initImageLoader(){
         UniversalImageLoader universalImageLoader = new UniversalImageLoader(mContext);
         ImageLoader.getInstance().init(universalImageLoader.getConfig());
